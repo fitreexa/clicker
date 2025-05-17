@@ -2,7 +2,8 @@ import pygame
 import sys
 from helper import resource_path
 from sprite import GameSprite
-from en import Enemy
+# from en import Enemy
+import time
 
 pygame.init()
 
@@ -30,9 +31,13 @@ almaz=GameSprite(asset2,590, 450, 120, 120,0)
 text_dub=win=font2.render('100 КЛИКОВ',True,(255,0,0))
 text_bul=win=font2.render('500 КЛИКОВ',True,(255,0,0))
 text_almaz=win=font2.render('1500 КЛИКОВ',True,(255,0,0))
+start_time = pygame.time.get_ticks()  # Время в миллисекундах
+show_time = 3000
 
 transparent_surface = pygame.Surface((400, 800), pygame.SRCALPHA) 
 transparent_surface.fill((119, 136, 153, 128))
+
+none=''
 
 clicks = 0
 power_of_clicks=10
@@ -41,6 +46,7 @@ second_achievement=500
 third_achievement=1500
 game = True
 while game:
+    current_time = pygame.time.get_ticks()
     screen.blit(background, (0, 0))
     screen.blit(transparent_surface, (500, 0))
     dub.reset(screen)
@@ -60,19 +66,18 @@ while game:
                 clicks += power_of_clicks
                 button.rect.y += 10
                 if clicks >= first_achievement:
-                    power_of_clicks = 200
-                    text_dub=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    power_of_clicks = 2
+                    text_dub=win=font2.render(none,True,(255,0,0))
                     screen.blit(text_dub,(595,100))
                 if clicks >= second_achievement:
-                    power_of_clicks = 150
-                    text_bul=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    power_of_clicks = 5
+                    text_bul=win=font2.render(none,True,(255,0,0))
                     screen.blit(text_bul,(595,300))
                 if clicks >= third_achievement:
-                    power_of_clicks = 120
-                    text_almaz=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    power_of_clicks = 12
+                    text_almaz=win=font2.render(none,True,(255,0,0))
                     screen.blit(text_almaz,(595,500))
-
-        elif event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 if button.collidepoint(event.pos):
                     button.rect.y -= 10
@@ -81,6 +86,7 @@ while game:
         # text = font.render(f"Кликов: {clicks}", True, WHITE)
     screen.blit(text, (20,10))
     pygame.display.flip()
+    pygame.time.Clock().tick(60)
 
 pygame.quit()
 sys.exit()
