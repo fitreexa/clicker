@@ -28,13 +28,17 @@ almaz=GameSprite(asset2,590, 450, 120, 120,0)
 # sunduk=Enemy(asset4,-150, 100, 120, 120,1)
 
 text_dub=win=font2.render('100 КЛИКОВ',True,(255,0,0))
-text_bul=win=font2.render('1000 КЛИКОВ',True,(255,0,0))
-text_almaz=win=font2.render('5000 КЛИКОВ',True,(255,0,0))
+text_bul=win=font2.render('500 КЛИКОВ',True,(255,0,0))
+text_almaz=win=font2.render('1500 КЛИКОВ',True,(255,0,0))
 
 transparent_surface = pygame.Surface((400, 800), pygame.SRCALPHA) 
 transparent_surface.fill((119, 136, 153, 128))
 
 clicks = 0
+power_of_clicks=10
+first_achievement=100
+second_achievement=500
+third_achievement=1500
 game = True
 while game:
     screen.blit(background, (0, 0))
@@ -43,16 +47,31 @@ while game:
     button.reset(screen)
     almaz.reset(screen)
     bul.reset(screen)
+    screen.blit(text_dub,(595,100))
+    screen.blit(text_bul,(595,300))
+    screen.blit(text_almaz,(595,500))
     # sunduk.reset(screen)
     # sunduk.auto_move(x_finish=390,x_start=-150)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if button.collidepoint(event.pos):
-                    clicks += 1
-                    button.rect.y +=10 
+            if event.button == 1 and button.collidepoint(event.pos):
+                clicks += power_of_clicks
+                button.rect.y += 10
+                if clicks >= first_achievement:
+                    power_of_clicks = 200
+                    text_dub=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    screen.blit(text_dub,(595,100))
+                if clicks >= second_achievement:
+                    power_of_clicks = 150
+                    text_bul=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    screen.blit(text_bul,(595,300))
+                if clicks >= third_achievement:
+                    power_of_clicks = 120
+                    text_almaz=win=font2.render('ОТКРЫТО',True,(255,0,0))
+                    screen.blit(text_almaz,(595,500))
+
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 if button.collidepoint(event.pos):
@@ -61,9 +80,6 @@ while game:
     text = font1.render(str(clicks), True, WHITE)
         # text = font.render(f"Кликов: {clicks}", True, WHITE)
     screen.blit(text, (20,10))
-    screen.blit(text_dub,(595,100))
-    screen.blit(text_bul,(590,300))
-    screen.blit(text_almaz,(590,500))
     pygame.display.flip()
 
 pygame.quit()
